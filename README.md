@@ -1,61 +1,37 @@
 <img width="3188" height="1202" alt="frame (3)" src="https://github.com/user-attachments/assets/517ad8e9-ad22-457d-9538-a9e62d137cd7" />
 
 
-# [Project Name] 🎯
+# Wet Fiber 🎯
 
 
 ## Basic Details
-### Team Name: [Name]
+### Team Name:Time_pass
 
 
 ### Team Members
-- Team Lead: [Name] - [College]
-- Member 2: [Name] - [College]
-- Member 3: [Name] - [College]
+- Team Lead: Sumayya Sainu-College Of Engineering Karunagappally
+- Member 2: Pranav P-College Of Engineering Karunagappally
 
 ### Project Description
-[2-3 lines about what your project does]
+An in-depth exploration of what happens when cotton gets wet. Spoiler alert: it becomes... wet. Groundbreaking stuff.
 
 ### The Problem (that doesn't exist)
-[What ridiculous problem are you solving?]
+what will happen if the water spread on a cotton ? 
 
 ### The Solution (that nobody asked for)
-[How are you solving it? Keep it fun!]
+The cotton get wet after the project .
 
 ## Technical Details
 ### Technologies/Components Used
 For Software:
-- [Languages used]
-- [Frameworks used]
-- [Libraries used]
-- [Tools used]
+- html,css,js
 
-For Hardware:
-- [List main components]
-- [List specifications]
-- [List tools required]
-
-### Implementation
-For Software:
-# Installation
-[commands]
-
-# Run
-[commands]
-
-### Project Documentation
-For Software:
 
 # Screenshots (Add at least 3)
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
-
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
-
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
-
+https://drive.google.com/file/d/1buyIvH8EDtGvfXMOadoUm7h5Ur8VTCLy/view?usp=shar
+This is about the front page of the website.
+https://drive.google.com/file/d/1buyIvH8EDtGvfXMOadoUm7h5Ur8VTCLy/view?usp=sharing
+https://drive.google.com/file/d/1buyIvH8EDtGvfXMOadoUm7h5Ur8VTCLy/view?usp=sharing
 # Diagrams
 ![Workflow](Add your workflow/architecture diagram here)
 *Add caption explaining your workflow*
@@ -88,9 +64,8 @@ For Hardware:
 [Add any extra demo materials/links]
 
 ## Team Contributions
-- [Name 1]: [Specific contributions]
-- [Name 2]: [Specific contributions]
-- [Name 3]: [Specific contributions]
+- Sumayya Sainu: helped in Documentation
+- Pranav P: helped in coding
 
 ---
 Made with ❤️ at TinkerHub Useless Projects 
