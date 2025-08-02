@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organic Cotton Animation</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 50%, #80deea 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .bubble {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            animation: float 15s infinite ease-in-out;
+            z-index: 1;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+            padding: 20px;
+            max-width: 800px;
+            width: 90%;
+        }
+
+        h1 {
+            color: #006064;
+            font-size: 2.8rem;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-weight: 700;
+        }
+
+        .cotton-container {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            margin: 0 auto 40px;
+            perspective: 1000px;
+        }
+
+        .cotton {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: all 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .cotton-fibers {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 40% 40%, #fff 0%, #f5f5f5 70%, #eee 100%);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .cotton-fibers:before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: -20%;
+            width: 140%;
+            height: 140%;
+            background: 
+                radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8) 0%, transparent 70%),
+                repeating-conic-gradient(from 0deg, rgba(255,255,255,0.9) 0deg 5deg, transparent 5deg 10deg);
+            filter: blur(1px);
+            opacity: 0.7;
+        }
+
+        .cotton-fibers:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle, transparent 50%, rgba(255,255,255,0.3) 100%),
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M30,50 Q50,30 70,50 T90,50" stroke="white" stroke-width="0.5" fill="none" opacity="0.3"/></svg>');
+            background-size: 30px 30px;
+        }
+
+        .cotton.wet .cotton-fibers {
+            background: radial-gradient(circle at 40% 40%, #e0f7fa 0%, #b2ebf2 70%, #80deea 100%);
+            transform: scale(0.95) rotateX(10deg);
+            box-shadow: 
+                0 10px 25px rgba(0, 0, 0, 0.1),
+                inset 0 0 30px rgba(0, 150, 200, 0.3);
+        }
+
+        .cotton.wet .cotton-fibers:before {
+            opacity: 0.9;
+            background: 
+                radial-gradient(circle at 30% 30%, rgba(200,240,255,0.8) 0%, transparent 70%),
+                repeating-conic-gradient(from 0deg, rgba(230,250,255,0.9) 0deg 5deg, transparent 5deg 10deg);
+        }
+
+        .water-droplets {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s;
+            z-index: 2;
+        }
+
+        .droplet {
+            position: absolute;
+            background: radial-gradient(ellipse at center, rgba(200, 240, 255, 0.9) 0%, rgba(150, 220, 255, 0.5) 70%, transparent 100%);
+            border-radius: 50%;
+            filter: blur(1px);
+            z-index: 3;
+        }
+
+        .splash {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%);
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 4;
+        }
+
+        .message {
+            font-size: 1.8rem;
+            color: #006064;
+            margin: 30px 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+            height: 40px;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #00bcd4 0%, #00838f 100%);
+            border: none;
+            color: white;
+            padding: 18px 36px;
+            font-size: 1.3rem;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            animation: pulse 1.5s infinite;
+        }
+
+        .btn:active {
+            transform: translateY(2px);
+        }
+
+        .btn:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #00838f 0%, #00bcd4 100%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: -1;
+        }
+
+        .btn:hover:after {
+            opacity: 1;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(0, 188, 212, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(0, 188, 212, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 188, 212, 0);
+            }
+        }
+
+        .fiber {
+            position: absolute;
+            background: linear-gradient(to right, rgba(255,255,255,0.8), rgba(255,255,255,0.2));
+            border-radius: 10px;
+            transform-origin: left center;
+            z-index: 2;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .cotton-container {
+                width: 280px;
+                height: 280px;
+            }
+            
+            .btn {
+                padding: 15px 30px;
+                font-size: 1.2rem;
+            }
+            
+            .message {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Organic Cotton Experience</h1>
+        
+        <div class="cotton-container">
+            <div class="cotton" id="cotton">
+                <div class="cotton-fibers"></div>
+            </div>
+            <div class="water-droplets" id="droplets"></div>
+            <div class="splash" id="splash"></div>
+        </div>
+        
+        <div class="message" id="message"></div>
+        
+        <button class="btn" id="wetBtn">Hydrate the Fibers!</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cotton = document.getElementById('cotton');
+            const wetBtn = document.getElementById('wetBtn');
+            const message = document.getElementById('message');
+            const droplets = document.getElementById('droplets');
+            const splash = document.getElementById('splash');
+            const cottonFibers = document.querySelector('.cotton-fibers');
+            
+            let clickCount = 0;
+            
+            // Create background bubbles
+            createBubbles();
+            
+            // Create individual fibers for more organic look
+            createFibers();
+            
+            wetBtn.addEventListener('click', function() {
+                // Reset animation
+                cotton.classList.remove('wet');
+                droplets.style.opacity = '0';
+                message.classList.remove('show');
+                message.textContent = '';
+                
+                // Force reflow to restart animation
+                void cotton.offsetWidth;
+                
+                // Add wet class to start animation
+                cotton.classList.add('wet');
+                
+                // Show water droplets
+                createDroplets();
+                droplets.style.opacity = '1';
+                
+                // Show splash effect
+                splash.style.opacity = '0.9';
+                splash.style.transform = 'translate(-50%, -50%) scale(0.5)';
+                splash.style.transition = 'all 0.5s ease';
+                
+                setTimeout(() => {
+                    splash.style.opacity = '0';
+                    splash.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                }, 500);
+                
+                // Increment click counter
+                clickCount++;
+                
+                // Show message after delay
+                setTimeout(() => {
+                    if (clickCount === 1) {
+                        message.textContent = "The cotton is wet";
+                    } else {
+                        message.textContent = "You wet the cotton again";
+                    }
+                    message.classList.add('show');
+                }, 1200);
+            });
+            
+            function createDroplets() {
+                droplets.innerHTML = '';
+                const dropletCount = 25;
+                
+                for (let i = 0; i < dropletCount; i++) {
+                    const droplet = document.createElement('div');
+                    droplet.classList.add('droplet');
+                    
+                    const size = Math.random() * 12 + 6;
+                    const left = Math.random() * 80 + 10;
+                    const top = Math.random() * 80 + 10;
+                    const delay = Math.random() * 0.5;
+                    const duration = Math.random() * 1 + 1;
+                    
+                    droplet.style.width = `${size}px`;
+                    droplet.style.height = `${size}px`;
+                    droplet.style.left = `${left}%`;
+                    droplet.style.top = `${top}%`;
+                    droplet.style.animation = `drip ${duration}s ease-in ${delay}s infinite`;
+                    
+                    droplets.appendChild(droplet);
+                }
+                
+                // Add keyframes for droplet animation
+                const style = document.createElement('style');
+                style.innerHTML = `
+                    @keyframes drip {
+                        0% {
+                            transform: translateY(0) scale(1);
+                            opacity: 1;
+                        }
+                        80% {
+                            opacity: 0.8;
+                        }
+                        100% {
+                            transform: translateY(30px) scale(0.8);
+                            opacity: 0;
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            function createBubbles() {
+                const bubbleCount = 20;
+                
+                for (let i = 0; i < bubbleCount; i++) {
+                    const bubble = document.createElement('div');
+                    bubble.classList.add('bubble');
+                    
+                    const size = Math.random() * 50 + 15;
+                    const left = Math.random() * 100;
+                    const delay = Math.random() * 15;
+                    const duration = Math.random() * 15 + 15;
+                    
+                    bubble.style.width = `${size}px`;
+                    bubble.style.height = `${size}px`;
+                    bubble.style.left = `${left}vw`;
+                    bubble.style.bottom = `-${size}px`;
+                    bubble.style.animationDelay = `${delay}s`;
+                    bubble.style.animationDuration = `${duration}s`;
+                    
+                    document.body.appendChild(bubble);
+                }
+            }
+            
+            function createFibers() {
+                const fiberCount = 40;
+                const containerSize = 320; // matches cotton-container width
+                
+                for (let i = 0; i < fiberCount; i++) {
+                    const fiber = document.createElement('div');
+                    fiber.classList.add('fiber');
+                    
+                    const length = Math.random() * 40 + 20;
+                    const thickness = Math.random() * 1 + 0.5;
+                    const angle = Math.random() * 360;
+                    const distance = Math.random() * 120 + 50;
+                    const x = containerSize/2 + Math.cos(angle * Math.PI/180) * distance;
+                    const y = containerSize/2 + Math.sin(angle * Math.PI/180) * distance;
+                    const opacity = Math.random() * 0.5 + 0.3;
+                    
+                    fiber.style.width = `${length}px`;
+                    fiber.style.height = `${thickness}px`;
+                    fiber.style.left = `${x}px`;
+                    fiber.style.top = `${y}px`;
+                    fiber.style.transform = `rotate(${angle}deg)`;
+                    fiber.style.opacity = opacity;
+                    fiber.style.setProperty('--start-angle', `${angle}deg`);
+                    
+                    // Animate fibers slightly
+                    fiber.style.animation = `fiberFloat ${Math.random()*5+5}s ease-in-out infinite alternate`;
+                    fiber.style.animationDelay = `${Math.random()*5}s`;
+                    
+                    cottonFibers.appendChild(fiber);
+                }
+                
+                // Add keyframes for fiber animation
+                const style = document.createElement('style');
+                style.innerHTML = `
+                    @keyframes fiberFloat {
+                        0% {
+                            transform: rotate(var(--start-angle)) translateX(0);
+                        }
+                        100% {
+                            transform: rotate(var(--start-angle)) translateX(${Math.random()*10-5}px) translateY(${Math.random()*10-5}px);
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        });
+    </script>
+</body>
+</html>
